@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Loom & Lane Return Policy - Easy returns and exchanges for your peace of mind.">
+    <meta name="keywords" content="return policy, returns, exchanges, Loom & Lane">
+    <meta name="author" content="Loom & Lane">
+    
+    <title>Return Policy | Loom & Lane</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html" aria-label="Loom & Lane Home">
+                <img src="assets/logo.svg" alt="Loom & Lane Logo" class="logo-dark">
+                <img src="assets/logo-light.svg" alt="Loom & Lane Logo" class="logo-light">
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Right Side Icons -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Search Icon -->
+                    <button id="searchToggle" class="search-toggle" aria-label="Search products" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <!-- Cart Icon -->
+                    <a href="cart.html" class="cart-icon position-relative" aria-label="Shopping cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-modal">
+            <div class="search-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon-left"></i>
+                    <input 
+                        type="text" 
+                        id="globalSearch" 
+                        class="search-input" 
+                        placeholder="Search for products, categories..."
+                        autocomplete="off"
+                        aria-label="Search products">
+                    <button id="searchClose" class="search-close" aria-label="Close search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="globalSearchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <section class="py-4 page-header">
+        <div class="container">
+            <h1 class="mb-2">Return & Exchange Policy</h1>
+            <p class="mb-0">
+                <i class="fas fa-home me-2"></i>
+                <a href="index.html" class="breadcrumb-link">Home</a>
+                <i class="fas fa-chevron-right mx-2" style="font-size: 0.8rem;"></i>
+                <span>Return Policy</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== RETURN POLICY CONTENT ========== -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Introduction -->
+                    <div class="mb-5">
+                        <p class="lead">At Loom & Lane, we want you to be completely satisfied with your purchase. If you're not happy with your order, we offer easy returns and exchanges within 30 days of delivery.</p>
+                    </div>
+
+                    <!-- Return Eligibility -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-check-circle text-accent me-2"></i> Return Eligibility</h3>
+                        <p>Items are eligible for return or exchange if they meet all of the following conditions:</p>
+                        <ul>
+                            <li>Returned within <strong>30 days</strong> of delivery date</li>
+                            <li>Items are in their <strong>original condition</strong> - unused, unworn, and undamaged</li>
+                            <li>Original tags and packaging are intact</li>
+                            <li>Accompanied by proof of purchase (order confirmation or receipt)</li>
+                            <li>Item is not on the non-returnable items list (see below)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Non-Returnable Items -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-times-circle text-accent me-2"></i> Non-Returnable Items</h3>
+                        <p>The following items cannot be returned or exchanged:</p>
+                        <ul>
+                            <li>Custom or personalized products</li>
+                            <li>Final sale or clearance items</li>
+                            <li>Items marked as "non-returnable" on the product page</li>
+                            <li>Products with broken seals or packaging</li>
+                            <li>Perishable goods or fresh flower arrangements</li>
+                            <li>Gift cards or vouchers</li>
+                        </ul>
+                    </div>
+
+                    <!-- Return Process -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-undo text-accent me-2"></i> How to Return an Item</h3>
+                        <p>Follow these simple steps to initiate a return:</p>
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="card h-100 p-3" style="background: var(--bg-accent);">
+                                    <h5><span class="badge bg-secondary">Step 1</span></h5>
+                                    <p class="mb-0">Contact our customer service team via email at <strong>returns@loomandlane.lk</strong> or call <strong>+94 11 234 5678</strong> within 30 days of receiving your order.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 p-3" style="background: var(--bg-accent);">
+                                    <h5><span class="badge bg-secondary">Step 2</span></h5>
+                                    <p class="mb-0">Provide your order number, item details, and reason for return. We'll send you a Return Authorization Number (RAN).</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 p-3" style="background: var(--bg-accent);">
+                                    <h5><span class="badge bg-secondary">Step 3</span></h5>
+                                    <p class="mb-0">Pack the item securely in its original packaging with all tags attached. Include your RAN in the package.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 p-3" style="background: var(--bg-accent);">
+                                    <h5><span class="badge bg-secondary">Step 4</span></h5>
+                                    <p class="mb-0">Ship the item to our returns address (provided with your RAN) or drop it off at any of our branch locations.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Important:</strong> Returns without a Return Authorization Number may be delayed or rejected.
+                        </div>
+                    </div>
+
+                    <!-- Exchange Process -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-exchange-alt text-accent me-2"></i> Exchanges</h3>
+                        <p>If you'd like to exchange an item for a different size, color, or variant:</p>
+                        <ul>
+                            <li>Follow the same return process and indicate you want an exchange</li>
+                            <li>Specify the replacement item you want</li>
+                            <li>We'll ship the new item once we receive and inspect your return</li>
+                            <li>Exchanges are subject to product availability</li>
+                            <li>If there's a price difference, we'll refund or charge accordingly</li>
+                        </ul>
+                    </div>
+
+                    <!-- Refund Policy -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-money-bill-wave text-accent me-2"></i> Refund Policy</h3>
+                        
+                        <h5>Refund Processing Time</h5>
+                        <p>Once we receive your returned item:</p>
+                        <ul>
+                            <li><strong>Inspection:</strong> 2-3 business days to inspect the returned item</li>
+                            <li><strong>Refund Approval:</strong> Email notification once approved</li>
+                            <li><strong>Refund Processing:</strong> 5-10 business days to process the refund</li>
+                            <li><strong>Credit to Account:</strong> Additional 3-5 business days depending on your bank</li>
+                        </ul>
+
+                        <h5 class="mt-4">Refund Method</h5>
+                        <p>Refunds will be issued to the original payment method:</p>
+                        <ul>
+                            <li><strong>Credit/Debit Card:</strong> Refunded to the same card</li>
+                            <li><strong>Bank Transfer:</strong> Processed to the account you specify</li>
+                            <li><strong>Cash Payment:</strong> Bank transfer or store credit</li>
+                        </ul>
+
+                        <h5 class="mt-4">Partial Refunds</h5>
+                        <p>Partial refunds may be issued in the following cases:</p>
+                        <ul>
+                            <li>Items not in original condition or damaged due to customer fault</li>
+                            <li>Items returned after 30 days (at management discretion)</li>
+                            <li>Missing components or accessories</li>
+                        </ul>
+                    </div>
+
+                    <!-- Return Shipping -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-truck text-accent me-2"></i> Return Shipping Costs</h3>
+                        
+                        <h5>Domestic Returns (Sri Lanka)</h5>
+                        <ul>
+                            <li><strong>Defective/Incorrect Items:</strong> We cover return shipping costs</li>
+                            <li><strong>Change of Mind:</strong> Customer responsible for return shipping (LKR 500-800)</li>
+                            <li><strong>Free Drop-off:</strong> Return items for free at any branch location</li>
+                        </ul>
+
+                        <h5 class="mt-4">International Returns</h5>
+                        <ul>
+                            <li>Customer responsible for return shipping costs unless item is defective</li>
+                            <li>International return shipping typically ranges from LKR 3,000-6,000</li>
+                            <li>We recommend using tracked shipping services</li>
+                        </ul>
+                    </div>
+
+                    <!-- Damaged or Defective -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-tools text-accent me-2"></i> Damaged or Defective Items</h3>
+                        <p>If you receive a damaged or defective item:</p>
+                        <ul>
+                            <li>Contact us immediately upon receipt (within 48 hours)</li>
+                            <li>Provide photos of the damaged item and packaging</li>
+                            <li>We'll arrange for immediate replacement or full refund</li>
+                            <li>Return shipping costs covered by us</li>
+                            <li>No restocking fees applied</li>
+                        </ul>
+                    </div>
+
+                    <!-- Restocking Fee -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-percentage text-accent me-2"></i> Restocking Fee</h3>
+                        <p>A restocking fee may apply in certain situations:</p>
+                        <ul>
+                            <li><strong>Standard Returns:</strong> No restocking fee</li>
+                            <li><strong>Large/Bulky Items:</strong> 15% restocking fee may apply</li>
+                            <li><strong>Custom Orders (if accepted):</strong> 25% restocking fee</li>
+                        </ul>
+                    </div>
+
+                    <!-- Store Credit -->
+                    <div class="card mb-4 p-4">
+                        <h3 class="mb-4"><i class="fas fa-gift text-accent me-2"></i> Store Credit Option</h3>
+                        <p>Choose store credit instead of a refund and receive:</p>
+                        <ul>
+                            <li><strong>10% bonus</strong> credit on your return value</li>
+                            <li>No expiration date on store credit</li>
+                            <li>Can be used on any future purchases</li>
+                            <li>Faster processing (1-2 business days)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="card p-4" style="background: var(--bg-accent);">
+                        <h4><i class="fas fa-headset text-accent me-2"></i> Need Help?</h4>
+                        <p class="mb-0">Our customer service team is here to assist with returns and exchanges:</p>
+                        <p class="mb-0 mt-2">
+                            <strong>Email:</strong> returns@loomandlane.lk<br>
+                            <strong>Phone:</strong> +94 11 234 5678<br>
+                            <strong>Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM
+                        </p>
+                        <div class="mt-3">
+                            <a href="contact.html" class="btn btn-accent">
+                                <i class="fas fa-envelope"></i> Contact Support
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Last Updated -->
+                    <div class="mt-4 text-center">
+                        <p class="text-muted small">Last updated: December 22, 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Brand Column -->
+                <div class="col-lg-4 col-md-6">
+                    <img src="assets/logo.svg" alt="Loom & Lane" class="footer-logo logo-dark">
+                    <img src="assets/logo-light.svg" alt="Loom & Lane" class="footer-logo logo-light">
+                    <p>Curated Sri Lankan lifestyle products celebrating traditional craftsmanship and sustainable living.</p>
+                    <div class="footer-social mt-3">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="cart.html">Shopping Cart</a>
+                </div>
+                
+                <!-- Customer Service -->
+                <div class="col-lg-3 col-md-6">
+                    <h5>Customer Service</h5>
+                    <a href="shipping.html">Shipping Policy</a>
+                    <a href="returns.html">Return Policy</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="feedback.html">Feedback</a>
+                </div>
+                
+                <!-- Branch Locations -->
+                <div class="col-lg-3 col-md-6">
+                    <h5>Our Branches</h5>
+                    
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Colombo</strong>
+                            <p class="mb-0">123 Galle Road, Colombo 03</p>
+                        </div>
+                    </div>
+                    
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Galle</strong>
+                            <p class="mb-0">45 Lighthouse Street, Galle Fort</p>
+                        </div>
+                    </div>
+                    
+                    <div class="branch-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Kandy</strong>
+                            <p class="mb-0">78 Peradeniya Road, Kandy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2025 Loom & Lane. All rights reserved. | Crafted with <i class="fas fa-heart text-accent"></i> in Sri Lanka</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Custom Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <!-- Initialize Page -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof updateCartCount === 'function') {
+                updateCartCount();
+            }
+        });
+    </script>
+</body>
+</html>

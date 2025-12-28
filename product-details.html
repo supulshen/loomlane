@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View detailed product information for handcrafted Sri Lankan lifestyle products from Loom & Lane.">
+    <meta name="keywords" content="Sri Lankan products, handcrafted, artisan, product details">
+    <meta name="author" content="Loom & Lane">
+    
+    <title>Product Details | Loom & Lane</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Product Details Page Styles */
+        .product-image-gallery {
+            position: sticky;
+            top: 80px;
+        }
+        
+        .main-product-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            transition: transform var(--transition-normal);
+            cursor: zoom-in;
+        }
+        
+        .main-product-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .thumbnail-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .thumbnail-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all var(--transition-fast);
+        }
+        
+        .thumbnail-image:hover {
+            border-color: var(--color-accent);
+            transform: scale(1.05);
+        }
+        
+        .thumbnail-image.active {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .product-info {
+            background: var(--bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .product-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+        
+        .price-section {
+            background: var(--bg-accent);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+        }
+        
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            font-family: var(--font-heading);
+        }
+        
+        .original-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            color: var(--color-text-light);
+            margin-left: 1rem;
+        }
+        
+        .savings-badge {
+            display: inline-block;
+            background: var(--color-success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+        
+        .variant-selector {
+            margin: var(--spacing-md) 0;
+        }
+        
+        .variant-selector label {
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .variant-option {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--bg-secondary);
+        }
+        
+        .variant-option:hover {
+            border-color: var(--color-accent);
+            background: var(--bg-accent);
+        }
+        
+        .variant-option.selected {
+            border-color: var(--color-primary);
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: var(--spacing-md) 0;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--bg-accent);
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            height: 50px;
+            border: none;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            color: var(--color-text);
+        }
+        
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            margin-top: var(--spacing-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-to-cart-btn.adding {
+            pointer-events: none;
+        }
+        
+        .add-to-cart-btn .btn-text {
+            transition: opacity var(--transition-fast);
+        }
+        
+        .add-to-cart-btn.adding .btn-text {
+            opacity: 0;
+        }
+        
+        .add-to-cart-btn .spinner-border {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        .add-to-cart-btn.adding .spinner-border {
+            display: inline-block;
+        }
+        
+        .product-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-accent);
+            border-radius: var(--radius-md);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .tabs-section {
+            margin-top: var(--spacing-xl);
+        }
+        
+        .nav-tabs {
+            border-bottom: 2px solid var(--color-border);
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--color-text);
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-fast);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+            background: transparent;
+        }
+        
+        .tab-content {
+            padding: var(--spacing-lg) 0;
+        }
+        
+        .rating-stars {
+            color: var(--color-accent);
+            font-size: 1.5rem;
+        }
+        
+        @keyframes cartFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(300px, -300px) scale(0.2);
+                opacity: 0;
+            }
+        }
+        
+        .cart-fly-animation {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            animation: cartFly 0.8s ease-in-out;
+        }
+        
+        @media (max-width: 991px) {
+            .product-image-gallery {
+                position: static;
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .main-product-image {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html" aria-label="Loom & Lane Home">
+                <img src="assets/logo.svg" alt="Loom & Lane Logo" class="logo-dark">
+                <img src="assets/logo-light.svg" alt="Loom & Lane Logo" class="logo-light">
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Right Side Icons -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Search Icon -->
+                    <button id="searchToggle" class="search-toggle" aria-label="Search products" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <!-- Cart Icon with Badge -->
+                    <a href="cart.html" class="position-relative cart-icon" aria-label="Shopping cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-modal">
+            <div class="search-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon-left"></i>
+                    <input 
+                        type="text" 
+                        id="globalSearch" 
+                        class="search-input" 
+                        placeholder="Search for products, categories..."
+                        autocomplete="off"
+                        aria-label="Search products">
+                    <button id="searchClose" class="search-close" aria-label="Close search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="globalSearchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- ========== LOADING SPINNER ========== -->
+    <div id="pageLoading" class="container my-5">
+        <div class="spinner-container" style="min-height: 400px;">
+            <div>
+                <div class="spinner mb-3"></div>
+                <p class="text-muted">Loading product details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PRODUCT DETAILS CONTENT ========== -->
+    <div id="productContent" style="display: none;">
+        <!-- Breadcrumb -->
+        <section class="py-3" style="background: var(--bg-accent);">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="products.html">Products</a></li>
+                        <li class="breadcrumb-item"><a href="#" id="breadcrumbCategory">Category</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" id="breadcrumbProduct">Product</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Main Product Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Product Images -->
+                    <div class="col-lg-6">
+                        <div class="product-image-gallery">
+                            <img id="mainProductImage" src="" alt="" class="main-product-image">
+                            <div class="thumbnail-gallery" id="thumbnailGallery">
+                                <!-- Thumbnails will be generated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Information -->
+                    <div class="col-lg-6">
+                        <div class="product-info">
+                            <!-- Badges -->
+                            <div class="mb-3" id="productBadges">
+                                <!-- Badges will be added dynamically -->
+                            </div>
+
+                            <!-- Product Title -->
+                            <h1 id="productTitle" class="mb-3">Product Name</h1>
+
+                            <!-- Category -->
+                            <p class="text-muted mb-3">
+                                <i class="fas fa-tag"></i> 
+                                <span id="productCategory">Category</span>
+                            </p>
+
+                            <!-- Rating -->
+                            <div class="mb-3">
+                                <span class="rating-stars" id="productRating">
+                                    <!-- Stars will be added dynamically -->
+                                </span>
+                                <span class="text-muted ms-2" id="productReviews">(0 reviews)</span>
+                            </div>
+
+                            <!-- Price Section -->
+                            <div class="price-section">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <span class="current-price" id="currentPrice">LKR 0</span>
+                                    <span class="original-price" id="originalPrice" style="display: none;">LKR 0</span>
+                                    <span class="savings-badge" id="savingsBadge" style="display: none;">Save 0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Product Description -->
+                            <div class="mb-4">
+                                <p id="productDescription" class="lead">Product description will appear here.</p>
+                            </div>
+
+                            <!-- Color Selector -->
+                            <div class="variant-selector" id="colorSelector" style="display: none;">
+                                <label><i class="fas fa-palette"></i> Select Color:</label>
+                                <div id="colorOptions"></div>
+                            </div>
+
+                            <!-- Size Selector -->
+                            <div class="variant-selector" id="sizeSelector" style="display: none;">
+                                <label><i class="fas fa-ruler"></i> Select Size:</label>
+                                <div id="sizeOptions"></div>
+                            </div>
+
+                            <!-- Quantity Selector -->
+                            <div class="quantity-selector">
+                                <label class="mb-0"><strong>Quantity:</strong></label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" onclick="decrementQuantity()" aria-label="Decrease quantity">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="quantityInput" class="quantity-input" value="1" min="1" max="10" readonly>
+                                    <button class="quantity-btn" onclick="incrementQuantity()" aria-label="Increase quantity">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Stock Status -->
+                            <p id="stockStatus" class="mb-3">
+                                <i class="fas fa-check-circle text-success"></i>
+                                <span class="text-success fw-bold">In Stock</span>
+                            </p>
+
+                            <!-- Add to Cart Button -->
+                            <button id="addToCartBtn" class="btn btn-accent btn-lg add-to-cart-btn" onclick="handleAddToCart()">
+                                <span class="btn-text">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </span>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+
+                            <!-- Product Features -->
+                            <div class="product-features">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-shipping-fast"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Free Shipping</strong>
+                                        <small class="d-block text-muted">Orders over LKR 5,000</small>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Authentic Quality</strong>
+                                        <small class="d-block text-muted">100% Handcrafted</small>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Easy Returns</strong>
+                                        <small class="d-block text-muted">30-day return policy</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details Tabs -->
+                <div class="tabs-section">
+                    <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
+                                <i class="fas fa-info-circle"></i> Details
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">
+                                <i class="fas fa-list"></i> Specifications
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="care-tab" data-bs-toggle="tab" data-bs-target="#care" type="button" role="tab">
+                                <i class="fas fa-heart"></i> Care Instructions
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="productTabContent">
+                        <div class="tab-pane fade show active" id="details" role="tabpanel">
+                            <div class="bg-secondary p-4 rounded" style="background: var(--bg-secondary) !important;">
+                                <h4 class="mb-3">Product Details</h4>
+                                <p id="fullDescription">Detailed product information will appear here.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="specs" role="tabpanel">
+                            <div class="bg-secondary p-4 rounded" style="background: var(--bg-secondary) !important;">
+                                <h4 class="mb-3">Specifications</h4>
+                                <table class="table">
+                                    <tbody id="specsTable">
+                                        <!-- Specs will be added dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="care" role="tabpanel">
+                            <div class="bg-secondary p-4 rounded" style="background: var(--bg-secondary) !important;">
+                                <h4 class="mb-3">Care Instructions</h4>
+                                <p id="careInstructions">Care instructions will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== ERROR MESSAGE ========== -->
+    <div id="errorMessage" class="container my-5" style="display: none;">
+        <div class="text-center">
+            <i class="fas fa-exclamation-triangle fa-4x text-danger mb-3"></i>
+            <h2>Product Not Found</h2>
+            <p class="text-muted mb-4">Sorry, the product you're looking for doesn't exist or has been removed.</p>
+            <a href="products.html" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-left"></i> Back to Products
+            </a>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <img src="assets/logo.svg" alt="Loom & Lane" class="footer-logo logo-dark">
+                    <img src="assets/logo-light.svg" alt="Loom & Lane" class="footer-logo logo-light">
+                    <p>Curated Sri Lankan lifestyle products celebrating traditional craftsmanship and sustainable living.</p>
+                    <div class="footer-social mt-3">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="cart.html">Shopping Cart</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Customer Service</h5>
+                    <a href="shipping.html">Shipping Policy</a>
+                    <a href="returns.html">Return Policy</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="feedback.html">Feedback</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Our Branches</h5>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Colombo</strong>
+                            <p class="mb-0">123 Galle Road, Colombo 03</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Galle</strong>
+                            <p class="mb-0">45 Lighthouse Street, Galle Fort</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Kandy</strong>
+                            <p class="mb-0">78 Peradeniya Road, Kandy</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Kalutara</strong>
+                            <p class="mb-0">56 Main Street, Kalutara</p>
+                        </div>
+                    </div>
+                    <div class="branch-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Anuradhapura</strong>
+                            <p class="mb-0">89 Sacred City Road, Anuradhapura</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2025 Loom & Lane. All rights reserved. | Crafted with <i class="fas fa-heart text-accent"></i> in Sri Lanka</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/theme.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    
+    <script>
+        // ========== PRODUCT DETAILS PAGE LOGIC ==========
+        
+        let currentProduct = null;
+        let selectedColor = null;
+        let selectedSize = null;
+        
+        /**
+         * Get product ID from URL
+         */
+        function getProductId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return parseInt(urlParams.get('id'));
+        }
+        
+        /**
+         * Load product details
+         * 
+         * IMPORTANT: fetch() requires a local server (e.g., Live Server extension) 
+         * due to browser CORS security policies. Opening HTML files directly via 
+         * file:// protocol will cause fetch() to fail.
+         */
+        async function loadProductDetails() {
+            const productId = getProductId();
+            
+            if (!productId) {
+                showError();
+                return;
+            }
+            
+            try {
+                // Simulate realistic loading delay (300ms)
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Fetch products from relative path (requires local server)
+                const response = await fetch('data/products.json');
+                
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Parse JSON data
+                const data = await response.json();
+                
+                // Validate data structure
+                if (!data.products || !Array.isArray(data.products)) {
+                    throw new Error('Invalid data structure');
+                }
+                
+                // Find the specific product
+                currentProduct = data.products.find(p => p.id === productId);
+                
+                if (!currentProduct) {
+                    showError();
+                    return;
+                }
+                
+                console.log(`✓ Successfully loaded product: ${currentProduct.name}`);
+                
+                displayProduct(currentProduct);
+                
+            } catch (error) {
+                console.error('❌ Error loading product:', error);
+                console.error('Make sure you are running this site with a local server (e.g., Live Server)');
+                showError();
+            }
+        }
+        
+        /**
+         * Display product details
+         */
+        function displayProduct(product) {
+            // Hide loading, show content
+            document.getElementById('pageLoading').style.display = 'none';
+            document.getElementById('productContent').style.display = 'block';
+            
+            // Update page title
+            document.title = `${product.name} | Loom & Lane`;
+            
+            // Breadcrumb
+            document.getElementById('breadcrumbCategory').textContent = product.category;
+            document.getElementById('breadcrumbCategory').href = `products.html?category=${encodeURIComponent(product.category)}`;
+            document.getElementById('breadcrumbProduct').textContent = product.name;
+            
+            // Badges
+            const badgesContainer = document.getElementById('productBadges');
+            badgesContainer.innerHTML = '';
+            if (product.badge) {
+                const badgeClass = product.badge === 'sale' ? 'badge-sale' : 'badge-new';
+                badgesContainer.innerHTML = `<span class="product-badge ${badgeClass}">${product.badge.toUpperCase()}</span>`;
+            }
+            
+            // Title and category
+            document.getElementById('productTitle').textContent = product.name;
+            document.getElementById('productCategory').textContent = product.category;
+            
+            // Rating
+            const ratingStars = document.getElementById('productRating');
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(product.rating)) {
+                    starsHTML += '<i class="fas fa-star"></i>';
+                } else if (i === Math.ceil(product.rating) && product.rating % 1 !== 0) {
+                    starsHTML += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    starsHTML += '<i class="far fa-star"></i>';
+                }
+            }
+            ratingStars.innerHTML = starsHTML;
+            document.getElementById('productReviews').textContent = `(${product.reviews} reviews)`;
+            
+            // Price
+            document.getElementById('currentPrice').textContent = formatPrice(product.price);
+            
+            if (product.originalPrice) {
+                document.getElementById('originalPrice').textContent = formatPrice(product.originalPrice);
+                document.getElementById('originalPrice').style.display = 'inline';
+                
+                const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                document.getElementById('savingsBadge').textContent = `Save ${savings}%`;
+                document.getElementById('savingsBadge').style.display = 'inline-block';
+            }
+            
+            // Description
+            document.getElementById('productDescription').textContent = product.description;
+            document.getElementById('fullDescription').textContent = product.description;
+            
+            // Images
+            document.getElementById('mainProductImage').src = product.image;
+            document.getElementById('mainProductImage').alt = product.name;
+            
+            // Generate thumbnails (using same image for demo)
+            const thumbnailGallery = document.getElementById('thumbnailGallery');
+            thumbnailGallery.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="thumbnail-image active" onclick="changeMainImage(this, '${product.image}')">
+                <img src="${product.image}" alt="${product.name}" class="thumbnail-image" onclick="changeMainImage(this, '${product.image}')">
+                <img src="${product.image}" alt="${product.name}" class="thumbnail-image" onclick="changeMainImage(this, '${product.image}')">
+                <img src="${product.image}" alt="${product.name}" class="thumbnail-image" onclick="changeMainImage(this, '${product.image}')">
+            `;
+            
+            // Colors
+            if (product.colors && product.colors.length > 0) {
+                document.getElementById('colorSelector').style.display = 'block';
+                const colorOptions = document.getElementById('colorOptions');
+                colorOptions.innerHTML = product.colors.map((color, index) => 
+                    `<span class="variant-option ${index === 0 ? 'selected' : ''}" onclick="selectColor(this, '${color}')">${color}</span>`
+                ).join('');
+                selectedColor = product.colors[0];
+            }
+            
+            // Sizes
+            if (product.sizes && product.sizes.length > 0) {
+                document.getElementById('sizeSelector').style.display = 'block';
+                const sizeOptions = document.getElementById('sizeOptions');
+                sizeOptions.innerHTML = product.sizes.map((size, index) => 
+                    `<span class="variant-option ${index === 0 ? 'selected' : ''}" onclick="selectSize(this, '${size}')">${size}</span>`
+                ).join('');
+                selectedSize = product.sizes[0];
+            }
+            
+            // Stock status
+            const stockStatus = document.getElementById('stockStatus');
+            if (!product.inStock) {
+                stockStatus.innerHTML = '<i class="fas fa-times-circle text-danger"></i> <span class="text-danger fw-bold">Out of Stock</span>';
+                document.getElementById('addToCartBtn').disabled = true;
+            }
+            
+            // Specifications
+            const specsTable = document.getElementById('specsTable');
+            specsTable.innerHTML = `
+                <tr><th width="200">Material:</th><td>${product.material}</td></tr>
+                <tr><th>Category:</th><td>${product.category}</td></tr>
+                <tr><th>Available Colors:</th><td>${product.colors ? product.colors.join(', ') : 'Standard'}</td></tr>
+                <tr><th>Available Sizes:</th><td>${product.sizes ? product.sizes.join(', ') : 'One Size'}</td></tr>
+                <tr><th>Stock Status:</th><td><span class="${product.inStock ? 'text-success' : 'text-danger'}">${product.inStock ? 'In Stock' : 'Out of Stock'}</span></td></tr>
+            `;
+            
+            // Care instructions
+            document.getElementById('careInstructions').textContent = product.care;
+        }
+        
+        /**
+         * Show error message
+         */
+        function showError() {
+            document.getElementById('pageLoading').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+        
+        /**
+         * Change main image
+         */
+        function changeMainImage(thumbnail, imageSrc) {
+            document.getElementById('mainProductImage').src = imageSrc;
+            document.querySelectorAll('.thumbnail-image').forEach(img => img.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+        
+        /**
+         * Select color variant
+         */
+        function selectColor(element, color) {
+            document.querySelectorAll('#colorOptions .variant-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColor = color;
+        }
+        
+        /**
+         * Select size variant
+         */
+        function selectSize(element, size) {
+            document.querySelectorAll('#sizeOptions .variant-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedSize = size;
+        }
+        
+        /**
+         * Increment quantity
+         */
+        function incrementQuantity() {
+            const input = document.getElementById('quantityInput');
+            const currentValue = parseInt(input.value);
+            if (currentValue < parseInt(input.max)) {
+                input.value = currentValue + 1;
+            }
+        }
+        
+        /**
+         * Decrement quantity
+         */
+        function decrementQuantity() {
+            const input = document.getElementById('quantityInput');
+            const currentValue = parseInt(input.value);
+            if (currentValue > parseInt(input.min)) {
+                input.value = currentValue - 1;
+            }
+        }
+        
+        /**
+         * Handle add to cart with animation
+         */
+        async function handleAddToCart() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('quantityInput').value);
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            
+            // Show loading state
+            addToCartBtn.classList.add('adding');
+            
+            // Add to cart
+            const success = await addToCart(currentProduct.id, quantity, selectedColor, selectedSize);
+            
+            if (success) {
+                // Create flying cart animation
+                createCartFlyAnimation();
+                
+                // Wait a bit then remove loading state
+                setTimeout(() => {
+                    addToCartBtn.classList.remove('adding');
+                }, 800);
+            } else {
+                addToCartBtn.classList.remove('adding');
+            }
+        }
+        
+        /**
+         * Create cart fly animation
+         */
+        function createCartFlyAnimation() {
+            const mainImage = document.getElementById('mainProductImage');
+            const cartIcon = document.querySelector('.cart-icon');
+            
+            if (!mainImage || !cartIcon) return;
+            
+            // Create clone of product image
+            const imageClone = mainImage.cloneNode(true);
+            imageClone.classList.add('cart-fly-animation');
+            
+            const rect = mainImage.getBoundingClientRect();
+            imageClone.style.position = 'fixed';
+            imageClone.style.left = rect.left + 'px';
+            imageClone.style.top = rect.top + 'px';
+            imageClone.style.width = '100px';
+            imageClone.style.height = '100px';
+            imageClone.style.objectFit = 'cover';
+            imageClone.style.borderRadius = '50%';
+            imageClone.style.zIndex = '9999';
+            
+            document.body.appendChild(imageClone);
+            
+            // Remove after animation
+            setTimeout(() => {
+                imageClone.remove();
+            }, 800);
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetails();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <defs>
+    <!-- Define gradient for icon -->
+    <linearGradient id="loomGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8B84D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4A574;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Loom Icon - Weaving Pattern -->
+  <g transform="translate(8, 15)">
+    <!-- Vertical threads (warp) -->
+    <line x1="4" y1="0" x2="4" y2="30" stroke="#E8E8E8" stroke-width="2" opacity="0.9"/>
+    <line x1="12" y1="0" x2="12" y2="30" stroke="#E8E8E8" stroke-width="2" opacity="0.9"/>
+    <line x1="20" y1="0" x2="20" y2="30" stroke="#E8E8E8" stroke-width="2" opacity="0.9"/>
+    <line x1="28" y1="0" x2="28" y2="30" stroke="#E8E8E8" stroke-width="2" opacity="0.9"/>
+    
+    <!-- Horizontal threads (weft) - weaving pattern -->
+    <path d="M 0,8 Q 4,6 8,8 T 16,8 T 24,8 T 32,8" 
+          stroke="url(#loomGradientLight)" 
+          stroke-width="2.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 0,16 Q 4,18 8,16 T 16,16 T 24,16 T 32,16" 
+          stroke="url(#loomGradientLight)" 
+          stroke-width="2.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 0,24 Q 4,22 8,24 T 16,24 T 24,24 T 32,24" 
+          stroke="url(#loomGradientLight)" 
+          stroke-width="2.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    
+    <!-- Frame corners -->
+    <circle cx="2" cy="2" r="2" fill="#E8B84D"/>
+    <circle cx="30" cy="2" r="2" fill="#E8B84D"/>
+    <circle cx="2" cy="28" r="2" fill="#E8B84D"/>
+    <circle cx="30" cy="28" r="2" fill="#E8B84D"/>
+  </g>
+  
+  <!-- Text: Loom & Lane -->
+  <text x="52" y="35" 
+        font-family="'Playfair Display', Georgia, serif" 
+        font-size="24" 
+        font-weight="700" 
+        fill="#E8E8E8"
+        letter-spacing="-0.5">
+    Loom 
+    <tspan fill="#E8B84D" font-style="italic" font-weight="400">&amp;</tspan>
+    Lane
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="52" y="48" 
+        font-family="'Poppins', Arial, sans-serif" 
+        font-size="7" 
+        font-weight="500" 
+        fill="#B0B0B0" 
+        letter-spacing="1.5"
+        opacity="0.8">ARTISAN CRAFTS</text>
+</svg>

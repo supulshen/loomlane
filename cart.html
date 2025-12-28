@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Review your shopping cart and proceed to checkout at Loom & Lane.">
+    <meta name="keywords" content="shopping cart, checkout, Sri Lankan products">
+    <meta name="author" content="Loom & Lane">
+    
+    <title>Shopping Cart | Loom & Lane</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Cart Page Styles */
+        .cart-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .cart-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .cart-item-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+        
+        .cart-item-details {
+            flex-grow: 1;
+            padding: 0 var(--spacing-md);
+        }
+        
+        .cart-item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-meta {
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            font-family: var(--font-heading);
+        }
+        
+        .quantity-controls-cart {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            width: fit-content;
+        }
+        
+        .quantity-btn-cart {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-accent);
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn-cart:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+        
+        .quantity-input-cart {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            color: var(--color-text);
+        }
+        
+        .remove-btn {
+            background: transparent;
+            border: 2px solid var(--color-error);
+            color: var(--color-error);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-weight: 600;
+        }
+        
+        .remove-btn:hover {
+            background: var(--color-error);
+            color: white;
+        }
+        
+        .cart-summary {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            padding-top: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-top: 2px solid var(--color-border);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .empty-cart-icon {
+            font-size: 6rem;
+            color: var(--color-text-light);
+            opacity: 0.5;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .promo-code-section {
+            background: var(--bg-accent);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-md);
+        }
+        
+        .promo-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 991px) {
+            .cart-summary {
+                position: static;
+                margin-top: var(--spacing-lg);
+            }
+            
+            .cart-item-image {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .cart-item {
+                flex-direction: column !important;
+            }
+            
+            .cart-item-details {
+                padding: var(--spacing-sm) 0;
+            }
+            
+            .cart-item-actions {
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html" aria-label="Loom & Lane Home">
+                <img src="assets/logo.svg" alt="Loom & Lane Logo" class="logo-dark">
+                <img src="assets/logo-light.svg" alt="Loom & Lane Logo" class="logo-light">
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Right Side Icons -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Search Icon -->
+                    <button id="searchToggle" class="search-toggle" aria-label="Search products" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <!-- Cart Icon with Badge -->
+                    <a href="cart.html" class="position-relative cart-icon" aria-label="Shopping cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-modal">
+            <div class="search-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon-left"></i>
+                    <input 
+                        type="text" 
+                        id="globalSearch" 
+                        class="search-input" 
+                        placeholder="Search for products, categories..."
+                        autocomplete="off"
+                        aria-label="Search products">
+                    <button id="searchClose" class="search-close" aria-label="Close search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="globalSearchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <section class="py-4 page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-2">Shopping Cart</h1>
+                    <p class="mb-0">
+                        <i class="fas fa-home me-2"></i>
+                        <a href="index.html" class="breadcrumb-link">Home</a>
+                        <i class="fas fa-chevron-right mx-2" style="font-size: 0.8rem;"></i>
+                        <span>Shopping Cart</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <p class="mb-0" id="cartItemCount">
+                        <i class="fas fa-shopping-cart"></i> 0 Items
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CART CONTENT ========== -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Loading State -->
+            <div id="cartLoading" class="text-center py-5">
+                <div class="spinner mb-3"></div>
+                <p class="text-muted">Loading your cart...</p>
+            </div>
+
+            <!-- Empty Cart State -->
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <i class="fas fa-shopping-cart empty-cart-icon"></i>
+                <h2>Your Cart is Empty</h2>
+                <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet.</p>
+                <a href="products.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-shopping-bag"></i> Start Shopping
+                </a>
+            </div>
+
+            <!-- Cart with Items -->
+            <div id="cartWithItems" class="row" style="display: none;">
+                <!-- Cart Items List -->
+                <div class="col-lg-8">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3>Cart Items</h3>
+                        <button class="btn btn-outline btn-sm" onclick="handleClearCart()">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                    </div>
+                    
+                    <div id="cartItemsList">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <h4 class="mb-4">Order Summary</h4>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <strong id="subtotalAmount">LKR 0</strong>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Tax (8%)</span>
+                            <strong id="taxAmount">LKR 0</strong>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <strong id="shippingAmount">LKR 0</strong>
+                        </div>
+                        
+                        <div class="summary-row summary-total">
+                            <span>Total</span>
+                            <span id="totalAmount">LKR 0</span>
+                        </div>
+                        
+                        <!-- Promo Code Section -->
+                        <div class="promo-code-section">
+                            <label class="fw-bold mb-2">
+                                <i class="fas fa-tag"></i> Have a promo code?
+                            </label>
+                            <div class="promo-input-group">
+                                <input type="text" id="promoCodeInput" class="form-control" placeholder="Enter code">
+                                <button class="btn btn-outline btn-sm" onclick="applyPromoCode()">
+                                    Apply
+                                </button>
+                            </div>
+                            <small id="promoMessage" class="text-muted"></small>
+                        </div>
+                        
+                        <!-- Checkout Button -->
+                        <a href="checkout.html" class="btn btn-accent btn-lg w-100 mt-4">
+                            <i class="fas fa-lock"></i> Proceed to Checkout
+                        </a>
+                        
+                        <a href="products.html" class="btn btn-outline w-100 mt-2">
+                            <i class="fas fa-arrow-left"></i> Continue Shopping
+                        </a>
+                        
+                        <!-- Trust Badges -->
+                        <div class="mt-4 pt-4" style="border-top: 1px solid var(--color-border);">
+                            <div class="text-center small text-muted">
+                                <i class="fas fa-shield-alt text-success"></i> Secure Checkout<br>
+                                <i class="fas fa-truck text-primary"></i> Free shipping over LKR 5,000<br>
+                                <i class="fas fa-undo text-warning"></i> 30-day return policy
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <img src="assets/logo.svg" alt="Loom & Lane" class="footer-logo logo-dark">
+                    <img src="assets/logo-light.svg" alt="Loom & Lane" class="footer-logo logo-light">
+                    <p>Curated Sri Lankan lifestyle products celebrating traditional craftsmanship and sustainable living.</p>
+                    <div class="footer-social mt-3">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="cart.html">Shopping Cart</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Customer Service</h5>
+                    <a href="shipping.html">Shipping Policy</a>
+                    <a href="returns.html">Return Policy</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="feedback.html">Feedback</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Our Branches</h5>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Colombo</strong>
+                            <p class="mb-0">123 Galle Road, Colombo 03</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Galle</strong>
+                            <p class="mb-0">45 Lighthouse Street, Galle Fort</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Kandy</strong>
+                            <p class="mb-0">78 Peradeniya Road, Kandy</p>
+                        </div>
+                    </div>
+                    <div class="branch-card mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Kalutara</strong>
+                            <p class="mb-0">56 Main Street, Kalutara</p>
+                        </div>
+                    </div>
+                    <div class="branch-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="branch-info">
+                            <strong>Anuradhapura</strong>
+                            <p class="mb-0">89 Sacred City Road, Anuradhapura</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2025 Loom & Lane. All rights reserved. | Crafted with <i class="fas fa-heart text-accent"></i> in Sri Lanka</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/theme.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    
+    <script>
+        // ========== CART PAGE LOGIC ==========
+        
+        let cartProducts = [];
+        const TAX_RATE = 0.08; // 8% tax
+        const FREE_SHIPPING_THRESHOLD = 5000;
+        const STANDARD_SHIPPING = 500;
+        
+        /**
+         * Load cart page
+         * 
+         * IMPORTANT: fetch() requires a local server (e.g., Live Server extension) 
+         * due to browser CORS security policies.
+         */
+        async function loadCartPage() {
+            const loadingElement = document.getElementById('cartLoading');
+            
+            try {
+                // Get cart items from localStorage
+                const cartItems = cartManager.getItems();
+                
+                // Simulate realistic loading delay (200ms)
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
+                // Load product data (requires local server)
+                const response = await fetch('data/products.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.products || !Array.isArray(data.products)) {
+                    throw new Error('Invalid data structure');
+                }
+                
+                const allProducts = data.products;
+                
+                // Match cart items with product details
+                cartProducts = cartItems.map(cartItem => {
+                    const product = allProducts.find(p => p.id === cartItem.id);
+                    return {
+                        ...cartItem,
+                        productData: product
+                    };
+                }).filter(item => item.productData); // Remove items without product data
+                
+                console.log(`✓ Successfully loaded cart with ${cartProducts.length} items`);
+                
+                // Hide loading
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+                
+                // Display cart
+                if (cartProducts.length === 0) {
+                    showEmptyCart();
+                } else {
+                    showCartItems();
+                }
+                
+            } catch (error) {
+                console.error('❌ Error loading cart:', error);
+                console.error('Make sure you are running this site with a local server (e.g., Live Server)');
+                
+                if (loadingElement) {
+                    loadingElement.innerHTML = `
+                        <div class="text-center text-danger py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                            <h4>Failed to Load Cart</h4>
+                            <p>Please ensure you are using a local server.</p>
+                            <p class="small text-muted">Tip: Install "Live Server" VS Code extension</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        /**
+         * Show empty cart state
+         */
+        function showEmptyCart() {
+            document.getElementById('cartLoading').style.display = 'none';
+            document.getElementById('emptyCart').style.display = 'block';
+            document.getElementById('cartWithItems').style.display = 'none';
+            document.getElementById('cartItemCount').innerHTML = '<i class="fas fa-shopping-cart"></i> 0 items';
+        }
+        
+        /**
+         * Show cart items
+         */
+        function showCartItems() {
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartWithItems = document.getElementById('cartWithItems');
+            
+            document.getElementById('cartLoading').style.display = 'none';
+            document.getElementById('emptyCart').style.display = 'none';
+            cartWithItems.style.display = 'flex';
+            
+            // Update item count
+            const totalItems = cartProducts.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartItemCount').innerHTML = `<i class="fas fa-shopping-cart"></i> ${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+            
+            // Generate cart items HTML
+            cartItemsList.innerHTML = cartProducts.map(item => createCartItemHTML(item)).join('');
+            
+            // Calculate and display totals
+            calculateTotals();
+        }
+        
+        /**
+         * Create cart item HTML
+         */
+        function createCartItemHTML(item) {
+            const product = item.productData;
+            const itemTotal = product.price * item.quantity;
+            
+            const colorInfo = item.color ? `<span class="badge bg-secondary me-1">${item.color}</span>` : '';
+            const sizeInfo = item.size ? `<span class="badge bg-secondary">${item.size}</span>` : '';
+            
+            return `
+                <div class="cart-item d-flex align-items-center">
+                    <img src="${product.image}" alt="${product.name}" class="cart-item-image">
+                    
+                    <div class="cart-item-details">
+                        <h5 class="cart-item-title">${product.name}</h5>
+                        <p class="cart-item-meta">
+                            <i class="fas fa-tag"></i> ${product.category}
+                            ${colorInfo}
+                            ${sizeInfo}
+                        </p>
+                        <div class="cart-item-price">${formatPrice(product.price)}</div>
+                    </div>
+                    
+                    <div class="cart-item-actions d-flex flex-column align-items-end gap-3">
+                        <div class="quantity-controls-cart">
+                            <button class="quantity-btn-cart" onclick="updateItemQuantity(${product.id}, ${item.quantity - 1}, '${item.color}', '${item.size}')" aria-label="Decrease quantity">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="quantity-input-cart" value="${item.quantity}" readonly>
+                            <button class="quantity-btn-cart" onclick="updateItemQuantity(${product.id}, ${item.quantity + 1}, '${item.color}', '${item.size}')" aria-label="Increase quantity">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-end">
+                            <div class="fw-bold mb-2" style="font-size: 1.25rem; color: var(--color-primary);">
+                                ${formatPrice(itemTotal)}
+                            </div>
+                            <button class="remove-btn" onclick="handleRemoveItem(${product.id}, '${item.color}', '${item.size}')">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        /**
+         * Update item quantity
+         */
+        function updateItemQuantity(productId, newQuantity, color, size) {
+            if (newQuantity <= 0) {
+                handleRemoveItem(productId, color, size);
+                return;
+            }
+            
+            // Update in cart manager
+            updateCartQuantity(productId, newQuantity, color === 'null' ? null : color, size === 'null' ? null : size);
+            
+            // Reload cart page
+            loadCartPage();
+        }
+        
+        /**
+         * Handle remove item
+         */
+        function handleRemoveItem(productId, color, size) {
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                removeFromCart(productId, color === 'null' ? null : color, size === 'null' ? null : size);
+                loadCartPage();
+            }
+        }
+        
+        /**
+         * Handle clear cart
+         */
+        function handleClearCart() {
+            if (confirm('Are you sure you want to clear your entire cart?')) {
+                cartManager.clearCart();
+                loadCartPage();
+                showToast('Cart Cleared', 'All items have been removed from your cart', 'success');
+            }
+        }
+        
+        /**
+         * Calculate totals
+         */
+        function calculateTotals() {
+            // Calculate subtotal
+            const subtotal = cartProducts.reduce((sum, item) => {
+                return sum + (item.productData.price * item.quantity);
+            }, 0);
+            
+            // Calculate tax
+            const tax = subtotal * TAX_RATE;
+            
+            // Calculate shipping
+            const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+            
+            // Calculate total
+            const total = subtotal + tax + shipping;
+            
+            // Display amounts
+            document.getElementById('subtotalAmount').textContent = formatPrice(subtotal);
+            document.getElementById('taxAmount').textContent = formatPrice(tax);
+            
+            const shippingElement = document.getElementById('shippingAmount');
+            if (shipping === 0) {
+                shippingElement.innerHTML = '<span class="text-success fw-bold">FREE</span>';
+            } else {
+                shippingElement.textContent = formatPrice(shipping);
+            }
+            
+            document.getElementById('totalAmount').textContent = formatPrice(total);
+            
+            // Show shipping message if close to free shipping
+            if (subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD) {
+                const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+                showShippingMessage(remaining);
+            }
+        }
+        
+        /**
+         * Show shipping message
+         */
+        function showShippingMessage(remaining) {
+            const cartItemsList = document.getElementById('cartItemsList');
+            const message = `
+                <div class="alert alert-info mb-3" role="alert">
+                    <i class="fas fa-truck"></i>
+                    Add ${formatPrice(remaining)} more to get <strong>FREE SHIPPING</strong>!
+                </div>
+            `;
+            cartItemsList.insertAdjacentHTML('afterbegin', message);
+        }
+        
+        /**
+         * Apply promo code
+         */
+        function applyPromoCode() {
+            const promoInput = document.getElementById('promoCodeInput');
+            const promoMessage = document.getElementById('promoMessage');
+            const code = promoInput.value.trim().toUpperCase();
+            
+            // Demo promo codes
+            const promoCodes = {
+                'SAVE10': { discount: 0.10, message: '10% discount applied!' },
+                'WELCOME': { discount: 0.15, message: '15% welcome discount applied!' },
+                'FREESHIP': { discount: 0, message: 'Free shipping activated!' }
+            };
+            
+            if (code && promoCodes[code]) {
+                promoMessage.innerHTML = `<span class="text-success"><i class="fas fa-check-circle"></i> ${promoCodes[code].message}</span>`;
+                showToast('Promo Code Applied!', promoCodes[code].message, 'success');
+                promoInput.value = '';
+                
+                // In a real app, you would apply the discount to the total
+                // For now, just show the message
+            } else if (code) {
+                promoMessage.innerHTML = '<span class="text-danger"><i class="fas fa-times-circle"></i> Invalid promo code</span>';
+            } else {
+                promoMessage.innerHTML = '';
+            }
+        }
+        
+        // Initialize cart page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartPage();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
