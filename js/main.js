@@ -50,6 +50,43 @@ function showToast(title, message, type = 'success') {
 }
 
 /**
+ * Generate star rating HTML
+ * @param {number} rating - Rating value (e.g., 4.5)
+ * @param {number} reviews - Number of reviews
+ * @returns {string} HTML string with star icons
+ */
+function generateStars(rating, reviews = 0) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  
+  let starsHTML = '';
+  
+  // Full stars
+  for (let i = 0; i < fullStars; i++) {
+    starsHTML += '<i class="fas fa-star"></i>';
+  }
+  
+  // Half star
+  if (hasHalfStar) {
+    starsHTML += '<i class="fas fa-star-half-alt"></i>';
+  }
+  
+  // Empty stars
+  for (let i = 0; i < emptyStars; i++) {
+    starsHTML += '<i class="far fa-star"></i>';
+  }
+  
+  return `
+    <div class="product-rating">
+      <span class="stars">${starsHTML}</span>
+      <span class="rating-number">${rating}</span>
+      ${reviews > 0 ? `<span class="reviews-count">(${reviews})</span>` : ''}
+    </div>
+  `;
+}
+
+/**
  * Create product card HTML
  */
 function createProductCard(product) {
@@ -73,13 +110,7 @@ function createProductCard(product) {
           <p class="card-text small text-muted mb-2">
             <i class="fas fa-tag"></i> ${product.category}
           </p>
-          <div class="mb-2">
-            <span class="text-warning">
-              ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating))}
-              ${product.rating % 1 !== 0 ? '<i class="fas fa-star-half-alt"></i>' : ''}
-            </span>
-            <small class="text-muted ms-1">(${product.reviews})</small>
-          </div>
+          ${generateStars(product.rating, product.reviews)}
           <div class="mb-3">
             <span class="product-price">${formatPrice(product.price)}</span>
             ${oldPriceHTML}
@@ -170,6 +201,31 @@ async function loadProducts() {
 }
 
 /**
+ * Create skeleton loading card for carousel
+ */
+function createSkeletonCard() {
+  return `
+    <div class="carousel-item-wrapper">
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="skeleton-card card h-100">
+          <div class="skeleton skeleton-image"></div>
+          <div class="skeleton-content">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text full"></div>
+            <div class="skeleton skeleton-price"></div>
+            <div class="skeleton-buttons">
+              <div class="skeleton skeleton-button"></div>
+              <div class="skeleton skeleton-button"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
  * Display featured products on homepage
  */
 async function displayFeaturedProducts() {
@@ -179,20 +235,21 @@ async function displayFeaturedProducts() {
   if (!container) return;
 
   try {
-    // Show loading spinner
+    // Show skeleton loading cards instead of spinner
+    container.innerHTML = Array(6).fill(null).map(() => createSkeletonCard()).join('');
+    
     if (loadingSpinner) {
-      loadingSpinner.style.display = 'flex';
+      loadingSpinner.style.display = 'none';
     }
     
-    // Simulate realistic loading delay (300ms)
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Simulate realistic loading delay (800ms for demo purposes)
+    await new Promise(resolve => setTimeout(resolve, 800));
     
     // Load products if not already loaded
     if (allProducts.length === 0) {
       const data = await loadProducts();
       // If loading failed, data will be empty
       if (!data.products || data.products.length === 0) {
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
         container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Failed to load products. Please use a local server.</p></div>';
         return;
       }
@@ -201,18 +258,13 @@ async function displayFeaturedProducts() {
     // Filter featured products
     const featuredProducts = allProducts.filter(p => p.featured);
     
-    // Hide loading spinner
-    if (loadingSpinner) {
-      loadingSpinner.style.display = 'none';
-    }
-    
     // Display products
     if (featuredProducts.length === 0) {
       container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No featured products available.</p></div>';
       return;
     }
     
-    // Wrap each card in a fixed-width container for carousel
+    // Replace skeleton cards with real product cards
     container.innerHTML = featuredProducts.map(product => `
       <div class="carousel-item-wrapper">
         ${createProductCard(product)}

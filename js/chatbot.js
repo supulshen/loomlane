@@ -160,9 +160,12 @@ class LoomLaneChatbot {
           max-width: calc(100vw - 40px);
           height: 550px;
           max-height: calc(100vh - 120px);
-          background: var(--bg-secondary);
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           border-radius: 16px;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -283,6 +286,7 @@ class LoomLaneChatbot {
           border-radius: 12px;
           max-width: 75%;
           word-wrap: break-word;
+          font-weight: 500;
         }
 
         .message-bubble.bot {
@@ -295,6 +299,7 @@ class LoomLaneChatbot {
         .message-bubble.user {
           background: var(--color-accent);
           color: white;
+          font-weight: 600;
           border-bottom-right-radius: 4px;
         }
 
@@ -421,10 +426,19 @@ class LoomLaneChatbot {
             bottom: 70px;
             right: 10px;
           }
-
+          
           .chatbot-container {
             right: 10px;
             bottom: 10px;
+          }
+        }
+        
+        /* Dark mode glassmorphism for chat window */
+        [data-theme="dark"] .chat-window {
+          background: rgba(30, 28, 26, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
           }
         }
       </style>

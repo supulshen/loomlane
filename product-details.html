@@ -29,18 +29,27 @@
             top: 80px;
         }
         
+        /* Magnifying Glass Zoom Container */
+        .img-zoom-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            cursor: zoom-in;
+        }
+        
         .main-product-image {
             width: 100%;
             height: 500px;
             object-fit: cover;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
-            transition: transform var(--transition-normal);
-            cursor: zoom-in;
+            transition: transform 0.1s ease;
+            transform-origin: center center;
+            display: block;
         }
         
-        .main-product-image:hover {
-            transform: scale(1.02);
+        /* Zoomed state */
+        .img-zoom-container.zoomed .main-product-image {
+            cursor: zoom-out;
         }
         
         .thumbnail-gallery {
@@ -291,8 +300,12 @@
         }
         
         .rating-stars {
-            color: var(--color-accent);
+            color: #A07E5E; /* Terracotta color */
             font-size: 1.5rem;
+        }
+        
+        [data-theme="dark"] .rating-stars {
+            color: #FFD700; /* Gold color for dark mode */
         }
         
         @keyframes cartFly {
@@ -319,8 +332,108 @@
                 margin-bottom: var(--spacing-lg);
             }
             
+            /* Disable zoom on mobile for better touch experience */
+            .img-zoom-container {
+                cursor: default;
+            }
+            
+            .img-zoom-container .main-product-image {
+                cursor: default;
+            }
+            
             .main-product-image {
                 height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Typography */
+            h1 {
+                font-size: 2rem !important;
+            }
+            
+            h2, h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            /* Touch Targets */
+            .btn,
+            .form-control,
+            .form-select,
+            button {
+                min-height: 44px;
+            }
+            
+            /* Product image - Full width */
+            .main-product-image {
+                height: 300px;
+            }
+            
+            /* Thumbnails - Horizontal scroll */
+            .thumbnail-gallery {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+            
+            .thumbnail-image {
+                min-width: 80px;
+                height: 80px;
+            }
+            
+            /* Product info */
+            .product-title {
+                font-size: 1.5rem;
+            }
+            
+            .product-price {
+                font-size: 1.75rem;
+            }
+            
+            /* Variant options */
+            .variant-option {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Quantity selector - Full width */
+            .quantity-selector {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+            
+            .quantity-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* Action buttons - Stack on mobile */
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .product-actions .btn {
+                width: 100%;
+            }
+            
+            /* Tabs - Smaller text */
+            .nav-tabs .nav-link {
+                font-size: 0.9rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            /* Product description */
+            .tab-content {
+                font-size: 0.95rem;
+            }
+            
+            /* Related products - 2 column grid */
+            .related-products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+        }
             }
         }
     </style>
@@ -443,7 +556,9 @@
                     <!-- Product Images -->
                     <div class="col-lg-6">
                         <div class="product-image-gallery">
-                            <img id="mainProductImage" src="" alt="" class="main-product-image">
+                            <div class="img-zoom-container">
+                                <img id="mainProductImage" src="" alt="" class="main-product-image">
+                            </div>
                             <div class="thumbnail-gallery" id="thumbnailGallery">
                                 <!-- Thumbnails will be generated dynamically -->
                             </div>
@@ -785,6 +900,34 @@
         }
         
         /**
+         * Generate star rating HTML
+         */
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let starsHTML = '';
+            
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="fas fa-star"></i>';
+            }
+            
+            // Half star
+            if (hasHalfStar) {
+                starsHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            // Empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="far fa-star"></i>';
+            }
+            
+            return starsHTML;
+        }
+        
+        /**
          * Display product details
          */
         function displayProduct(product) {
@@ -814,17 +957,7 @@
             
             // Rating
             const ratingStars = document.getElementById('productRating');
-            let starsHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= Math.floor(product.rating)) {
-                    starsHTML += '<i class="fas fa-star"></i>';
-                } else if (i === Math.ceil(product.rating) && product.rating % 1 !== 0) {
-                    starsHTML += '<i class="fas fa-star-half-alt"></i>';
-                } else {
-                    starsHTML += '<i class="far fa-star"></i>';
-                }
-            }
-            ratingStars.innerHTML = starsHTML;
+            ratingStars.innerHTML = generateStars(product.rating);
             document.getElementById('productReviews').textContent = `(${product.reviews} reviews)`;
             
             // Price
@@ -1018,6 +1151,61 @@
             loadProductDetails();
             updateCartCount();
         });
+        
+        // ========== MAGNIFYING GLASS ZOOM EFFECT ==========
+        function initImageZoom() {
+            const container = document.querySelector('.img-zoom-container');
+            const image = document.getElementById('mainProductImage');
+            
+            if (!container || !image) return;
+            
+            // Only enable zoom on desktop (screen width > 991px)
+            if (window.innerWidth <= 991) return;
+            
+            let isZoomed = false;
+            
+            // Mouse move handler
+            container.addEventListener('mousemove', (e) => {
+                if (!isZoomed) return;
+                
+                const rect = container.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                // Set transform origin to mouse position
+                image.style.transformOrigin = `${x}% ${y}%`;
+            });
+            
+            // Mouse enter - enable zoom
+            container.addEventListener('mouseenter', () => {
+                isZoomed = true;
+                container.classList.add('zoomed');
+                image.style.transform = 'scale(2)';
+            });
+            
+            // Mouse leave - reset zoom
+            container.addEventListener('mouseleave', () => {
+                isZoomed = false;
+                container.classList.remove('zoomed');
+                image.style.transform = 'scale(1)';
+                image.style.transformOrigin = 'center center';
+            });
+        }
+        
+        // Initialize zoom when page loads
+        initImageZoom();
+        
+        // Reinitialize zoom when image changes (thumbnail click)
+        const originalChangeImage = window.changeProductImage;
+        window.changeProductImage = function(imageSrc) {
+            if (originalChangeImage) {
+                originalChangeImage(imageSrc);
+            } else {
+                document.getElementById('mainProductImage').src = imageSrc;
+            }
+            // Small delay to ensure image is loaded
+            setTimeout(initImageZoom, 100);
+        };
     </script>
 </body>
 </html>

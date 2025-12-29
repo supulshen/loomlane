@@ -203,6 +203,57 @@
                 width: 100%;
             }
         }
+        
+        @media (max-width: 768px) {
+            /* Typography - Reduce heading sizes */
+            h1 {
+                font-size: 2rem !important;
+            }
+            
+            h2, h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            /* Touch Targets - Minimum 44px */
+            .btn,
+            .form-control,
+            .form-select,
+            button {
+                min-height: 44px;
+            }
+            
+            /* Cart item cards */
+            .cart-item {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .cart-item-title {
+                font-size: 1rem;
+            }
+            
+            /* Quantity controls */
+            .quantity-btn {
+                width: 44px;
+                height: 44px;
+            }
+            
+            /* Cart summary - Full width buttons */
+            .cart-summary .btn {
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            /* Promo code input */
+            .promo-input-group {
+                flex-direction: column;
+            }
+            
+            .promo-input-group .form-control,
+            .promo-input-group .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>

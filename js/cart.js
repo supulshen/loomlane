@@ -173,6 +173,111 @@ const cartManager = new CartManager();
 // ========== HELPER FUNCTIONS ==========
 
 /**
+ * Create flying image animation to cart icon
+ */
+function createFlyingImage(productId, sourceElement) {
+  try {
+    // Find the product image - either from the clicked button's card or a provided element
+    let productImage = sourceElement;
+    
+    if (!productImage) {
+      // Try to find the image from the button context using window.event
+      const clickEvent = window.event;
+      if (clickEvent && clickEvent.target) {
+        const button = clickEvent.target.closest('button');
+        if (button) {
+          const card = button.closest('.card, .product-card');
+          if (card) {
+            productImage = card.querySelector('img');
+          }
+        }
+      }
+    }
+    
+    // If still no image, try to find by searching all cards for this product
+    if (!productImage) {
+      const allCards = document.querySelectorAll('.card, .product-card');
+      for (const card of allCards) {
+        const viewLink = card.querySelector(`a[href*="id=${productId}"]`);
+        const addButton = card.querySelector(`button[onclick*="${productId}"]`);
+        if (viewLink || addButton) {
+          productImage = card.querySelector('img');
+          break;
+        }
+      }
+    }
+    
+    // If no image found, skip animation
+    if (!productImage) {
+      console.log('No product image found for flying animation');
+      return;
+    }
+    
+    // Get cart icon position
+    const cartIcon = document.querySelector('.cart-icon');
+    if (!cartIcon) return;
+    
+    const cartRect = cartIcon.getBoundingClientRect();
+    const imageRect = productImage.getBoundingClientRect();
+    
+    // Clone the image
+    const flyingImg = productImage.cloneNode(true);
+    flyingImg.classList.add('flying-image');
+    
+    // Set initial position (exactly over the original image)
+    flyingImg.style.position = 'fixed';
+    flyingImg.style.left = `${imageRect.left}px`;
+    flyingImg.style.top = `${imageRect.top}px`;
+    flyingImg.style.width = `${imageRect.width}px`;
+    flyingImg.style.height = `${imageRect.height}px`;
+    flyingImg.style.objectFit = 'cover';
+    flyingImg.style.borderRadius = '12px';
+    flyingImg.style.zIndex = '9999';
+    flyingImg.style.pointerEvents = 'none';
+    flyingImg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+    
+    // Add to body
+    document.body.appendChild(flyingImg);
+    
+    // Force reflow
+    flyingImg.offsetHeight;
+    
+    // Animate to cart icon
+    requestAnimationFrame(() => {
+      flyingImg.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      flyingImg.style.left = `${cartRect.left + cartRect.width / 2}px`;
+      flyingImg.style.top = `${cartRect.top + cartRect.height / 2}px`;
+      flyingImg.style.width = '30px';
+      flyingImg.style.height = '30px';
+      flyingImg.style.opacity = '0.3';
+      flyingImg.style.transform = 'scale(0.1) rotate(360deg)';
+    });
+    
+    // Shake cart icon when image arrives
+    setTimeout(() => {
+      cartIcon.classList.add('shake');
+      
+      // Pulse the cart badge
+      const cartBadge = document.getElementById('cartCount') || document.querySelector('.cart-badge');
+      if (cartBadge) {
+        cartBadge.classList.add('pulse');
+        setTimeout(() => cartBadge.classList.remove('pulse'), 300);
+      }
+      
+      setTimeout(() => cartIcon.classList.remove('shake'), 500);
+    }, 600);
+    
+    // Remove flying image after animation completes
+    setTimeout(() => {
+      flyingImg.remove();
+    }, 900);
+    
+  } catch (error) {
+    console.error('Error creating flying animation:', error);
+  }
+}
+
+/**
  * Add product to cart (called from product cards and detail page)
  * 
  * IMPORTANT: fetch() requires a local server (e.g., Live Server extension) 
@@ -207,6 +312,9 @@ async function addToCart(productId, quantity = 1, selectedColor = null, selected
 
     // Add to cart
     cartManager.addItem(productId, quantity, selectedColor, selectedSize);
+
+    // Create flying image animation
+    createFlyingImage(productId);
 
     // Show success message
     showToast(

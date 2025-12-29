@@ -239,6 +239,61 @@
             .progress-steps::before {
                 display: none;
             }
+            
+            /* Typography */
+            h1 {
+                font-size: 2rem !important;
+            }
+            
+            h2, h3, h4 {
+                font-size: 1.5rem !important;
+            }
+            
+            h5 {
+                font-size: 1.25rem !important;
+            }
+            
+            /* Touch Targets */
+            .btn,
+            .form-control,
+            .form-select,
+            input,
+            button {
+                min-height: 44px;
+                font-size: 16px; /* Prevents iOS zoom */
+            }
+            
+            /* Checkout form - Stack layout */
+            .checkout-form .row > div {
+                margin-bottom: 1rem;
+            }
+            
+            /* Order summary - Sticky bottom on mobile */
+            .order-summary-card {
+                position: static;
+                margin-top: 2rem;
+            }
+            
+            /* Payment method selection */
+            .payment-method-card {
+                padding: 1rem;
+            }
+            
+            /* Order items - Smaller images */
+            .order-item-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .order-item-details {
+                font-size: 0.9rem;
+            }
+            
+            /* Buttons - Full width */
+            .btn-lg {
+                width: 100%;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
@@ -525,6 +580,17 @@
                             <div class="summary-row summary-total">
                                 <span>Total</span>
                                 <span id="checkoutTotal">LKR 0</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Methods -->
+                        <div class="payment-methods-checkout mt-3 pt-3 mb-3" style="border-top: 1px solid var(--color-border);">
+                            <small class="text-muted d-block mb-2 text-center">We Accept</small>
+                            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" class="payment-logo-checkout">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="payment-logo-checkout">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="American Express" class="payment-logo-checkout">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="payment-logo-checkout">
                             </div>
                         </div>
                         
