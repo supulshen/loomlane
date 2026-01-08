@@ -103,7 +103,7 @@ function createProductCard(product) {
       <div class="card product-card h-100">
         ${badgeHTML}
         <div style="overflow: hidden; height: 280px;">
-          <img src="${product.image}" class="card-img-top" alt="${product.name}" loading="lazy">
+          <img src="../${product.image}" class="card-img-top" alt="${product.name}" loading="lazy">
         </div>
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">${product.name}</h5>
@@ -138,7 +138,7 @@ function createCategoryCard(category) {
       <a href="products.html?category=${encodeURIComponent(category.name)}" class="text-decoration-none" aria-label="View ${category.name} products">
         <div class="card">
           <div style="position: relative; overflow: hidden;">
-            <img src="${category.image}" class="card-img-top" alt="${category.name}" loading="lazy">
+            <img src="../${category.image}" class="card-img-top" alt="${category.name}" loading="lazy">
             <div class="category-overlay"></div>
             <div class="category-content">
               <h4>${category.name}</h4>
@@ -165,7 +165,7 @@ function createCategoryCard(category) {
 async function loadProducts() {
   try {
     // Fetch products from relative path (requires local server)
-    const response = await fetch('data/products.json');
+    const response = await fetch('../data/products.json');
     
     // Check if response is successful
     if (!response.ok) {
@@ -507,7 +507,7 @@ function displayGlobalSearchResults(results) {
   
   const resultsHTML = results.slice(0, 8).map(product => `
     <a href="product-details.html?id=${product.id}" class="search-result-item">
-      <img src="${product.image}" alt="${product.name}" class="search-result-image">
+      <img src="../${product.image}" alt="${product.name}" class="search-result-image">
       <div class="search-result-content">
         <div class="search-result-title">${product.name}</div>
         <div class="search-result-category">${product.category}</div>
@@ -624,7 +624,7 @@ function displaySearchResults(results) {
   const resultsHTML = results.slice(0, 5).map(product => `
     <a href="product-details.html?id=${product.id}" class="list-group-item list-group-item-action">
       <div class="d-flex align-items-center">
-        <img src="${product.image}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-md);" class="me-3">
+        <img src="../${product.image}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-md);" class="me-3">
         <div class="flex-grow-1">
           <h6 class="mb-1">${product.name}</h6>
           <small class="text-muted">${product.category}</small>
