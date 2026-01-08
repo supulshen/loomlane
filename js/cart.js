@@ -136,7 +136,7 @@ class CartManager {
   async getCartTotal() {
     try {
       // Load products to get prices (requires local server)
-      const response = await fetch('../data/products.json');
+      const response = await fetch('data/products.json');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -286,7 +286,7 @@ function createFlyingImage(productId, sourceElement) {
 async function addToCart(productId, quantity = 1, selectedColor = null, selectedSize = null) {
   try {
     // Load product details (requires local server)
-    const response = await fetch('../data/products.json');
+    const response = await fetch('data/products.json');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
