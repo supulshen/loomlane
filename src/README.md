@@ -126,4 +126,4 @@ Loom-Lane/
 - Production quality
 
 ---
-© 2025 Loom & Lane. Crafted with ❤️ in Sri Lanka.
+© 2025 Loom & Lane. 
